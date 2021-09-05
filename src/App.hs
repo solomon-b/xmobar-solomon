@@ -1,6 +1,7 @@
 module App (config) where
 
 import           App.Acpi
+import           App.DunstStatus
 import           App.Icons
 import           Xmobar
 
@@ -19,11 +20,11 @@ config = defaultConfig
       , Run $ DiskU [("/", render HDD <> " <used>/<size>")] ["-L","20","-H","50","-m","1","-p","3"] 20
       , Run $ Volume "default" "Master"
           [ "-t", "<status> <volume>%" , "--", "-O", render VolumeUp, "-o", render VolumeOff, "-C", "#585858" ] 1
-      , Run $ Com "dunstStatus" [] "dunstStatus" 10
       , Run $ Date "<fc=#ffcc66>%a %b %_d %Y %I:%M %p</fc>" "date" 9
       , Run $ Wireless "wlp4s0" [ "--template" , render Wifi <> " <essid>" ] 10
       , Run $ Acpi "battery"
-              ]
+      , Run $ DunstStatus "dunstStatus"
+      ]
   , sepChar = "%"
   , alignSep = "}{"
   , template = "%StdinReader% }{ %disku% %default:Master% %battery% %wlp4s0wi% %dunstStatus% %date%          "

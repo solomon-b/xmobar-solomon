@@ -18,6 +18,7 @@ data Icon =
   | VolumeOff
   | Wifi
   | NoComment
+  | Comment
   | Plug
   | Bolt
   deriving Show
@@ -37,6 +38,7 @@ instance Render Icon where
     Plug                 -> showIcon FA.FaPlug
     Bolt                 -> showIcon FA.FaBolt
     NoComment            -> wrapIcon ['\62643']
+    Comment              -> wrapIcon ['\61557']
     where
       showIcon :: FA.FontAwesome -> String
       showIcon = wrapIcon . pure . FA.fontAwesomeChar

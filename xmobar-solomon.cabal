@@ -24,10 +24,12 @@ library
   build-depends:    base ^>=4.14.1.0
                   , extra
                   , font-awesome-type
+                  , process
                   , xmobar
                   , time
   exposed-modules:  App
                   , App.Acpi
+                  , App.DunstStatus
                   , App.Icons
   ghc-options:      -Wall -O2 -Wno-trustworthy-safe -Wno-star-is-type
   hs-source-dirs:   src
