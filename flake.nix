@@ -12,12 +12,7 @@
     defaultPackage.x86_64-linux = xmobar-solomon;
 
     overlay = final: prev: {
-      haskellPackages = prev.haskellPackages.override (old: {
-        overrides = prev.lib.composeExtensions (old.overrides or (_: _: {}))
-        (hself: hsuper: {
-          xmobar-solomon = xmobar-solomon;
-        });
-      });
+      xmobar-solomon = xmobar-solomon;
     };
   };
 }
