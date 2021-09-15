@@ -7,7 +7,7 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {inherit system;};
-      xmobar-solomon = pkgs.haskellPackages.callCabal2nix "xmobar" (./.);
+      xmobar-solomon = pkgs.haskellPackages.callCabal2nix "xmobar-solomon" (./.);
     in {
     defaultPackage.x86_64-linux =
       pkgs.haskellPackages.callPackage xmobar-solomon { };
