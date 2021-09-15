@@ -1,7 +1,7 @@
 {
   description = "My XMobar Wrapper";
 
-  inputs.nixpkgs.url = github:NixOS/nixpkgs/nixos-21.05;
+  inputs.nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
 
   outputs = { self, nixpkgs }:
     let
