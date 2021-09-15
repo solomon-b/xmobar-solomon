@@ -7,16 +7,15 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {inherit system;};
-      xmobar-solomon = pkgs.haskellPackages.callCabal2nix "xmobar-solomon" (./.);
+      xmobar-solomon = pkgs.haskellPackages.callCabal2nix "xmobar-solomon" (./.) { };
     in {
-    defaultPackage.x86_64-linux =
-      pkgs.haskellPackages.callPackage xmobar-solomon { };
+    defaultPackage.x86_64-linux = xmobar-solomon;
 
     overlay = final: prev: {
       haskellPackages = prev.haskellPackages.override (old: {
         overrides = prev.lib.composeExtensions (old.overrides or (_: _: {}))
         (hself: hsuper: {
-          xmobar = xmobar-solomon;
+          xmobar-solomon = xmobar-solomon;
         });
       });
     };
