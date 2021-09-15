@@ -17,6 +17,5 @@
         });
       });
     };
-    overlays = [ overlay ];
   };
 }
