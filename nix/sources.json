@@ -3,12 +3,12 @@
         "branch": "main",
         "description": "Easy Haskell Language Server tooling with Nix!",
         "homepage": "",
-        "owner": "jkachmar",
+        "owner": "ssbothwell",
         "repo": "easy-hls-nix",
-        "rev": "db85cac9d0405b4769b75cba0b004aed3beaf2de",
-        "sha256": "10nff6mqflrd6dz1fp2l9vmfwbgk0r7zm81qh2xnjj19a47pd7v3",
+        "rev": "58536e8b9ac695fa044606e8a7b21db31ef567fb",
+        "sha256": "0ppyi1dkb3w4k23vxxn4cw75x6ir22xfr64y0zbsjbpfp5r5grbz",
         "type": "tarball",
-        "url": "https://github.com/jkachmar/easy-hls-nix/archive/db85cac9d0405b4769b75cba0b004aed3beaf2de.tar.gz",
+        "url": "https://github.com/ssbothwell/easy-hls-nix/archive/58536e8b9ac695fa044606e8a7b21db31ef567fb.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -24,15 +24,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
-        "branch": "nixos-21.05",
+        "branch": "nixos-unstable",
         "description": "Nix Packages collection",
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "4b7e51865e44d3afc564e3a3111af12be1003251",
-        "sha256": "0n3cf1wgw3j8hswxjy5q1vcbyyml6z0c57jc5zjkgrvbkp4g3b2c",
+        "rev": "bcd607489d76795508c48261e1ad05f5d4b7672f",
+        "sha256": "0yjp9lrhzvyh9dc4b9dl456fr6nlchfmn85adq0vi4pnwfmh90z6",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/4b7e51865e44d3afc564e3a3111af12be1003251.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/bcd607489d76795508c48261e1ad05f5d4b7672f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

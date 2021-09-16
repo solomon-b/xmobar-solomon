@@ -1,19 +1,18 @@
-# --flags="all_extensions"
+{ pkgs ? import <nixpkgs> { } }:
+# let sources = import
+#./nix/sources.nix; pkgs = import sources.nixpkgs { };
+#
+#  easy-hls = pkgs.callPackage sources.easy-hls-nix {
+#    ghcVersions = [ "8.10.7" ];
+#  };
 let
-  sources = import ./nix/sources.nix;
-  pkgs = import sources.nixpkgs { };
-
-  easy-hls = pkgs.callPackage sources.easy-hls-nix {
-    ghcVersions = [ "8.10.4" ];
-  };
-
   tooling = [
     pkgs.cabal2nix
     pkgs.cabal-install
-    pkgs.haskell.compiler.ghc8104
+    pkgs.haskell.compiler.ghc8107
     pkgs.haskellPackages.xmobar
     pkgs.haskellPackages.font-awesome-type
-    easy-hls
+    #easy-hls
   ];
 
   dynamicLibraries = [
