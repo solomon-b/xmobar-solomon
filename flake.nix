@@ -15,6 +15,6 @@
       xmobar-solomon = xmobar-solomon;
     };
 
-    devShell = import ./shell.nix { inherit pkgs; };
+    devShell.x86_64-linux = import ./shell.nix { inherit pkgs; };
   };
 }
