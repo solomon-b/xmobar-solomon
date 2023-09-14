@@ -1,0 +1,7 @@
+/result
+/.envrc
+/dist-newstyle/
+.pre-commit-config.yaml
+/hie.yaml
+/.direnv/
+*.local
