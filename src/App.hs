@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
 module App (config) where
 
 --------------------------------------------------------------------------------
@@ -62,7 +63,7 @@ config = defaultConfig
   , bgColor      = background
   , fgColor      = foreground
   , alpha        = 255
-  , position     = TopP 0 67
+  , position     = TopW L 95
   , commands = [
         Run XMonadLog
       --, Run $ DiskU [("/", render HDD <> " <used>/<size>")] ["-L","20","-H","50","-m","1","-p","3"] 20
@@ -76,5 +77,5 @@ config = defaultConfig
       ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = "%XMonadLog% }{ %dunstStatus% %default:Master% %battery% %wlp170s0wi% %date%"
+  , template = "%XMonadLog% }{ %dunstStatus% %default:Master% %battery% %wlp170s0wi% %date%  "
   }
