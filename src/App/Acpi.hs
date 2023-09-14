@@ -3,6 +3,7 @@
 {-# LANGUAGE InstanceSigs #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeApplications #-}
+
 {-# HLINT ignore "Use <$>" #-}
 
 -- | Fetch and print ACPI power status using Font Awesome icons.
@@ -16,14 +17,12 @@ module App.Acpi where
 --------------------------------------------------------------------------------
 
 import App.Icons
-import Data.Foldable (fold)
-import Data.Function ((&))
-import Data.List.Extra (trim, isPrefixOf)
+import Data.List.Extra (isPrefixOf, trim)
 import Data.Maybe (mapMaybe)
 import Data.Ratio ((%))
 import Data.Time.Clock (DiffTime, NominalDiffTime)
-import Data.Time.Clock.POSIX ( posixSecondsToUTCTime)
-import Data.Time.Format (formatTime, defaultTimeLocale)
+import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
+import Data.Time.Format (defaultTimeLocale, formatTime)
 import System.Directory (listDirectory)
 import Xmobar (Exec (..))
 
@@ -32,22 +31,26 @@ import Xmobar (Exec (..))
 data Attr = EnergyNowAttr | EnergyFullAttr | StatusAttr
 
 instance Render Attr where
-  render EnergyNowAttr  = "charge_now"
+  render EnergyNowAttr = "charge_now"
   render EnergyFullAttr = "charge_full"
-  render StatusAttr     = "status"
+  render StatusAttr = "status"
 
 --------------------------------------------------------------------------------
 
-newtype Battery         = Battery Int
-newtype EnergyNow       = EnergyNow       { getEnergyNow       :: Integer }
-newtype EnergyFull      = EnergyFull      { getEnergyFull      :: Integer }
-newtype EnergyRemaining = EnergyRemaining { getEnergyRemaining :: Integer }
-data ChargeStatus       = Charging | Discharging | Full deriving stock (Show, Eq)
+newtype Battery = Battery Int
+
+newtype EnergyNow = EnergyNow {getEnergyNow :: Integer}
+
+newtype EnergyFull = EnergyFull {getEnergyFull :: Integer}
+
+newtype EnergyRemaining = EnergyRemaining {getEnergyRemaining :: Integer}
+
+data ChargeStatus = Charging | Discharging | Full deriving stock (Show, Eq)
 
 --------------------------------------------------------------------------------
 
 -- | Derived Battery Properties
-newtype EnergyPercent = EnergyPercent { getEnergyPercent :: Rational }
+newtype EnergyPercent = EnergyPercent {getEnergyPercent :: Rational}
 
 instance Render EnergyPercent where
   render energy = show (fromEnergyPercent energy) <> "%"
@@ -55,15 +58,15 @@ instance Render EnergyPercent where
 --------------------------------------------------------------------------------
 
 data BatteryStatus = BatteryStatus
-  { _battery :: Battery
-  , _energyPercent :: EnergyPercent
-  , _chargeStatus :: ChargeStatus
+  { _battery :: Battery,
+    _energyPercent :: EnergyPercent,
+    _chargeStatus :: ChargeStatus
   }
 
 instance Render BatteryStatus where
-  render (BatteryStatus bat energy status) =
-    let icon =  render . iconForBattery status $ energy
-    in icon <> render energy
+  render (BatteryStatus _bat energy status) =
+    let icon = render . iconForBattery status $ energy
+     in icon <> render energy
 
 --------------------------------------------------------------------------------
 
@@ -99,9 +102,9 @@ iconForBattery Full _ = BatteryChargingHigh
 toChargeStatus :: String -> ChargeStatus
 toChargeStatus str =
   case str of
-      "Charging"    -> Charging
-      "Discharging" -> Discharging
-      _             -> Full
+    "Charging" -> Charging
+    "Discharging" -> Discharging
+    _ -> Full
 
 toEnergyRemaining :: EnergyNow -> EnergyFull -> EnergyRemaining
 toEnergyRemaining (EnergyNow now) (EnergyFull full) = EnergyRemaining $ full - now
@@ -111,29 +114,29 @@ toEnergyPercent (EnergyNow now) (EnergyFull full) = EnergyPercent $ now % full
 
 --------------------------------------------------------------------------------
 
--- | Lookup the 'BatteryStatus' for a particular battery. 
+-- | Lookup the 'BatteryStatus' for a particular battery.
 getAcpiBat :: Battery -> IO BatteryStatus
 getAcpiBat bat@(Battery i) = do
   let sysFsPath = "/sys/class/power_supply/" <> "BAT" <> show i <> "/"
-  energyNow  <- EnergyNow  . read . trim <$> readFile (sysFsPath <> render EnergyNowAttr)
+  energyNow <- EnergyNow . read . trim <$> readFile (sysFsPath <> render EnergyNowAttr)
   energyFull <- EnergyFull . read . trim <$> readFile (sysFsPath <> render EnergyFullAttr)
-  status     <- toChargeStatus    . trim <$> readFile (sysFsPath <> render StatusAttr)
-  let energyPercent   = toEnergyPercent   energyNow energyFull
-  let energyRemaining = toEnergyRemaining energyNow energyFull
+  status <- toChargeStatus . trim <$> readFile (sysFsPath <> render StatusAttr)
+  let energyPercent = toEnergyPercent energyNow energyFull
+  let _energyRemaining = toEnergyRemaining energyNow energyFull
 
   pure $ BatteryStatus bat energyPercent status
 
 -- | Parse Battery battery identifiers.
 parseBattery :: String -> Maybe Battery
 parseBattery = \case
-   x | isPrefixOf "BAT" x -> Just $ Battery $ read $ drop 3 x
-   _ -> Nothing
+  x | isPrefixOf "BAT" x -> Just $ Battery $ read $ drop 3 x
+  _ -> Nothing
 
 -- | Lookup and parse battery names.
 findBatteries :: IO [Battery]
 findBatteries =
   let sysFsPath = "/sys/class/power_supply"
-  in fmap (mapMaybe parseBattery) $ listDirectory sysFsPath
+   in fmap (mapMaybe parseBattery) $ listDirectory sysFsPath
 
 -- | Main entrypoint for application.
 runAcpi :: IO String

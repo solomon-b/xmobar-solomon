@@ -1,8 +1,10 @@
 {-# OPTIONS_GHC -Wno-unused-top-binds #-}
+
 module App
-  ( InterfaceName (..)
-  , config
-  ) where
+  ( InterfaceName (..),
+    config,
+  )
+where
 
 --------------------------------------------------------------------------------
 
@@ -57,31 +59,35 @@ purple = "#cc99cc"
 --------------------------------------------------------------------------------
 -- Main
 
-
 newtype InterfaceName = InterfaceName String
 
 config :: InterfaceName -> Config
-config (InterfaceName inet) = defaultConfig
-  { font = "xft:Bitstream Vera Sans Mono:size=11:antialias=true"
-  , additionalFonts = ["xft: Material Design Icons:style=Regular"]
-  , allDesktops  = False
-  , pickBroadest = True
-  , bgColor      = background
-  , fgColor      = foreground
-  , alpha        = 255
-  , position     = TopW L 95
-  , commands = [
-        Run XMonadLog
-      --, Run $ DiskU [("/", render HDD <> " <used>/<size>")] ["-L","20","-H","50","-m","1","-p","3"] 20
-      -- , Run $ DiskU [("/dev/sda1", render HDD <> " <used>/<size>")] ["-L","20","-H","50","-m","1","-p","3"] 20
-      , Run $ Volume "default" "Master"
-        [ "-t", "<status><volume>%" , "--", "-O", render VolumeOn, "-o", render VolumeOff, "-c", red, "-C", foreground ] 10
-      , Run $ Acpi "battery"
-      , Run $ Wireless inet ["--template", render Wifi <> "<essid>"] 10
-      , Run $ DunstStatus "dunstStatus"
-      , Run $ Date ("<fc=" <> yellow <> ">%a %b %_d %Y %I:%M %p</fc>") "date" 9
-      ]
-  , sepChar = "%"
-  , alignSep = "}{"
-  , template = "%XMonadLog% }{ %dunstStatus% %default:Master% %battery% %wlp170s0wi% %date%  "
-  }
+config (InterfaceName inet) =
+  defaultConfig
+    { font = "xft:Bitstream Vera Sans Mono:size=11:antialias=true",
+      additionalFonts = ["xft: Material Design Icons:style=Regular"],
+      allDesktops = False,
+      pickBroadest = True,
+      bgColor = background,
+      fgColor = foreground,
+      alpha = 255,
+      position = TopW L 95,
+      commands =
+        [ Run XMonadLog,
+          -- , Run $ DiskU [("/", render HDD <> " <used>/<size>")] ["-L","20","-H","50","-m","1","-p","3"] 20
+          -- , Run $ DiskU [("/dev/sda1", render HDD <> " <used>/<size>")] ["-L","20","-H","50","-m","1","-p","3"] 20
+          Run $
+            Volume
+              "default"
+              "Master"
+              ["-t", "<status><volume>%", "--", "-O", render VolumeOn, "-o", render VolumeOff, "-c", red, "-C", foreground]
+              10,
+          Run $ Acpi "battery",
+          Run $ Wireless inet ["--template", render Wifi <> "<essid>"] 10,
+          Run $ DunstStatus "dunstStatus",
+          Run $ Date ("<fc=" <> yellow <> ">%a %b %_d %Y %I:%M %p</fc>") "date" 9
+        ],
+      sepChar = "%",
+      alignSep = "}{",
+      template = "%XMonadLog% }{ %dunstStatus% %default:Master% %battery% %wlp170s0wi% %date%  "
+    }

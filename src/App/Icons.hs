@@ -1,13 +1,12 @@
 {-# LANGUAGE LambdaCase #-}
-module App.Icons where
 
-import qualified Web.FontAwesomeType as FA
+module App.Icons where
 
 class Render a where
   render :: a -> String
 
-data Icon =
-    HDD
+data Icon
+  = HDD
   | Battery10
   | Battery20
   | Battery30
@@ -29,7 +28,7 @@ data Icon =
   | VolumeOn
   | Wifi
   | DoNotDisturb
-  deriving Show
+  deriving (Show)
 
 iconToChar :: Icon -> Char
 iconToChar = \case
@@ -47,7 +46,7 @@ iconToChar = \case
   BatteryFull -> '\xF0079'
   BatteryChargingLow -> '\xF12A4'
   BatteryChargingMed -> '\xF12A5'
-  BatteryChargingHigh-> '\xF12A6'
+  BatteryChargingHigh -> '\xF12A6'
   BatteryChargingEmpty -> '\xF089F'
   VolumeUp -> '\xF075D'
   VolumeDown -> '\xF075E'
@@ -55,6 +54,6 @@ iconToChar = \case
   VolumeOn -> '\xF057E'
   Wifi -> '\xF05A9'
   DoNotDisturb -> '\xF0376'
-    
+
 instance Render Icon where
   render icon = mconcat ["<fn=1>", [iconToChar icon], "</fn>"]
