@@ -1,5 +1,8 @@
 {-# OPTIONS_GHC -Wno-unused-top-binds #-}
-module App (config) where
+module App
+  ( InterfaceName (..)
+  , config
+  ) where
 
 --------------------------------------------------------------------------------
 
@@ -54,8 +57,11 @@ purple = "#cc99cc"
 --------------------------------------------------------------------------------
 -- Main
 
-config :: Config
-config = defaultConfig
+
+newtype InterfaceName = InterfaceName String
+
+config :: InterfaceName -> Config
+config (InterfaceName inet) = defaultConfig
   { font = "xft:Bitstream Vera Sans Mono:size=11:antialias=true"
   , additionalFonts = ["xft: Material Design Icons:style=Regular"]
   , allDesktops  = False
@@ -71,7 +77,7 @@ config = defaultConfig
       , Run $ Volume "default" "Master"
         [ "-t", "<status><volume>%" , "--", "-O", render VolumeOn, "-o", render VolumeOff, "-c", red, "-C", foreground ] 10
       , Run $ Acpi "battery"
-      , Run $ Wireless "wlp170s0" ["--template", render Wifi <> "<essid>"] 10
+      , Run $ Wireless inet ["--template", render Wifi <> "<essid>"] 10
       , Run $ DunstStatus "dunstStatus"
       , Run $ Date ("<fc=" <> yellow <> ">%a %b %_d %Y %I:%M %p</fc>") "date" 9
       ]
